@@ -1,0 +1,100 @@
+ using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+public class ChargeLevels : MonoBehaviour
+{
+    public GameObject sourceimagebg1;
+    public GameObject sourceimagebg2;
+    public bool borrarmemoriascore = false;
+    public int coinsguardados;
+    public int gemasguardadas;
+    public Text coinsGuardados;
+    public Text gemasGuardadas;
+    public GameObject level2ON;
+    public GameObject level2OFF;
+    public GameObject buttonlevel2OFF;
+    public GameObject buttonlevel2ON;
+    public GameObject pointer1;
+    public GameObject pointer2;
+    public GameObject optionCanvas;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        if (borrarmemoriascore)
+        {
+            PlayerPrefs.DeleteKey("coinscore");
+            PlayerPrefs.DeleteKey("putagema");
+        }
+        coinsguardados = PlayerPrefs.GetInt("coinscore");
+        gemasguardadas = PlayerPrefs.GetInt("gemscore");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K)) {//per borrar tot.
+            borrarmemoriascore = true;
+            Debug.Log("K");
+            if (borrarmemoriascore) {
+                PlayerPrefs.DeleteKey("coinscore");
+                PlayerPrefs.DeleteKey("putagema");
+                Debug.Log("Keys borrades");
+            }
+        }
+        // UPGRADE: Hacer si se puede level BOSS con las gemas. 
+        if (coinsguardados < 5)
+        {
+            pointer1.SetActive(true);
+            pointer2.SetActive(false);
+            level2OFF.SetActive(true);
+            sourceimagebg1.SetActive(true);
+            buttonlevel2OFF.SetActive(true);
+            buttonlevel2ON.SetActive(false);
+        }
+
+        else
+        {
+            pointer2.SetActive(true);
+            pointer1.SetActive(false);
+            level2OFF.SetActive(false);
+            level2ON.SetActive(true);
+            sourceimagebg2.SetActive(true);
+            buttonlevel2OFF.SetActive(false);
+            buttonlevel2ON.SetActive(true);
+        }
+
+        coinsGuardados.text = coinsguardados.ToString("f000");
+        gemasGuardadas.text = gemasguardadas.ToString("f000");
+    }
+
+    public void PlayGameplay()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(3);
+        // BGSoundScript.Instance.gameObject.GetComponent<AudioSource>().Stop();   
+    }
+    public void PlayLevel2() {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(6);
+    }
+
+    public void ChargeCredits() {
+
+        Time.timeScale = 1;
+        SceneManager.LoadScene(4);
+    }
+    public void BackMenu() {
+
+        Time.timeScale = 1;
+        SceneManager.LoadScene(2);
+    }
+    public void EnableOptionCanvas() {
+        optionCanvas.SetActive(true);
+    }
+    public void DisableOptionCanvas() {
+        optionCanvas.SetActive(false);
+    }
+}
